@@ -108,13 +108,11 @@ impl Printer {
     fn print_match<'m, M>(&self, line_number: usize, line: &str, matches: M)
             where M: Iterator<Item=regex::Match<'m>> {
         if self.options.use_colors {
-            let match_style = ansi_term::Style::new().bold();
-
             let mut buf = String::new();
             let mut pos = 0usize;
             for m in matches {
                 buf.push_str(&line[pos..m.start()]);
-                write!(&mut buf, "{}", match_style.paint(m.as_str())).unwrap();
+                write!(&mut buf, "{}", ansi_term::Color::Red.bold().paint(m.as_str())).unwrap();
                 pos = m.end();
             }
             buf.push_str(&line[pos..]);
